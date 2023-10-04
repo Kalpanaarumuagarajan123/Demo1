@@ -1,0 +1,25 @@
+@RestResource(urlMapping='/api/webhooks/pushDetailsDemo/*')
+global with sharing class SquareIntegration {
+    
+    @HttpPost
+    global static void notify() {
+        try {
+            RestRequest request = RestContext.request;
+            RestResponse res = RestContext.response;
+            
+            // Process the incoming webhook data
+            String requestBody = request.requestBody.toString();
+            
+            // Your processing logic here
+            
+            // Send a response if needed
+            res.statusCode = 200;
+            res.responseBody = Blob.valueOf('Webhook processed successfully');
+        } catch(Exception e) {
+            System.debug('Exception: ' + e.getMessage());
+            // Handle the exception, set appropriate response status, and message
+            RestContext.response.statusCode = 500;
+            RestContext.response.responseBody = Blob.valueOf('Error processing webhook: ' + e.getMessage());
+        }
+    }
+}
